@@ -20,4 +20,7 @@
 
 import Route from '@ioc:Adonis/Core/Route'
 
-Route.get('/', 'TestController.index')
+Route.get('/articles', 'ArticlesController.getAll')
+Route.get('/articles/:id', 'ArticlesController.getById')
+Route.post('/articles', 'ArticlesController.create')
+Route.delete('/articles/:id', 'ArticlesController.delete')
