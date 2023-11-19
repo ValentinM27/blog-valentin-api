@@ -6,11 +6,11 @@ import Tag from 'App/Models/Tag'
 
 export default class ArticlesController {
   public async getAll(): Promise<Array<Article>> {
-    return await Article.all()
+    return await Article.query().preload('paragraphs').preload('tags')
   }
 
   public async getById(ctx: HttpContextContract) {
-    return await Article.find(ctx.params.id)
+    return await this.findById(ctx.params.id)
   }
 
   public async create(ctx: HttpContextContract) {
@@ -58,7 +58,7 @@ export default class ArticlesController {
         await newArticle.related('tags').sync(tagsToSyncId)
       }
 
-      return newArticle
+      return await this.findById(newArticle.id)
     } catch (error) {
       return ctx.response.status(400).json(error.message)
     }
@@ -70,5 +70,9 @@ export default class ArticlesController {
     } catch (error) {
       return ctx.response.status(404).json(error.message)
     }
+  }
+
+  private async findById(id: number) {
+    return await Article.query().preload('paragraphs').preload('tags').where('id', id)
   }
 }
