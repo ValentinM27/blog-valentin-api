@@ -6,10 +6,13 @@ export default class Paragraph extends BaseModel {
   public id: number
 
   @column()
-  public subtile: string
+  public subtitle: string
 
   @column()
   public content: string
+
+  @column()
+  public articleId: number
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
